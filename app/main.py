@@ -17,7 +17,12 @@ def get_session_db():
         client.close()
 
 def get_flux_session():
-    client = FluxClient(url="http://localhost:8086", token="h0zgWrmVbUIqjIyI4A53B0sAY7l5S2YzvmCPskQKFIUcZjNUQxSfA0FO8ejx8wLnpqf8gAtPBJrDNmxXbQay7A==", org="sundaya", debug=True)
+    client = FluxClient(
+            url="http://localhost:8086",
+            token="h0zgWrmVbUIqjIyI4A53B0sAY7l5S2YzvmCPskQKFIUcZjNUQxSfA0FO8ejx8wLnpqf8gAtPBJrDNmxXbQay7A==",
+            org="sundaya",
+            debug=True
+        )
     try:
         yield client
     finally:
@@ -94,7 +99,7 @@ def flux_create_suhu(data: List[SuhuBase], client: FluxClient= Depends(get_flux_
 @app.get('/flux/suhu')
 def flux_view_suhu(client : FluxClient = Depends(get_flux_session)):
     query_api = client.query_api()
-    tables = query_api.query('from(bucket:"test") |> range(start: -50m)')
+    tables = query_api.query('from(bucket:"test") |> range(start: -1d)')
     response = []
     for table in tables:
         print(len(table.records))
